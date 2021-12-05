@@ -36,10 +36,18 @@ export function useLocalStorageState<V>(key: string, initialValue: V): [V, (newV
 }
 
 export const RememberPassword = () => {
+    const [value, setValue] = useLocalStorageState('remember-password', 'off');
 
-    // TODO: change this to use useLocalStorageState
-    const [value, setValue] = React.useState('off');
-    // const [value, setValue] = useLocalStorageState('remember-password', 'off');
+    React.useEffect(() => {
+      if(value){
+        useLocalStorageState('remember-password', value);
+      }
+    }, [value])
+
+    React.useEffect(() => {
+      let val:string = localStorage.getItem("remember-password") ?? '';
+      setValue(val);
+    }, [])
 
     return (
         <input type="checkbox"
